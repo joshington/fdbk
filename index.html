@@ -1,17 +1,354 @@
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Widget Test Page</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FeedBackify - Beautiful Customer Feedback Widgets for your SaaS</title>
+  <style>
+    :root {
+      --primary: #0070f3;
+      --primary-hover: #0051cb;
+      --bg: #ffffff;
+      --accent: #fafafa;
+      --border: #eaeaea;
+      --text: #111111;
+      --text-muted: #666666;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background-color: var(--bg);
+      line-height: 1.5;
+    }
+
+    /* Navigation Bar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand-logo {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-logo span {
+      color: var(--primary);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--text);
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-block;
+    }
+
+    .btn-outline {
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .btn-outline:hover {
+      background: var(--accent);
+      border-color: var(--text);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      border: none;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    /* Hero Section */
+    .hero {
+      max-width: 1200px;
+      margin: 80px auto;
+      padding: 0 40px;
+      text-align: center;
+    }
+
+    .hero-tagline {
+      background: #eff6ff;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 50px;
+      display: inline-block;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .hero h1 {
+      font-size: 56px;
+      font-weight: 800;
+      line-height: 1.1;
+      margin: 0 0 24px 0;
+      letter-spacing: -0.02em;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(90deg, #0070f3, #00dfd8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 20px;
+      color: var(--text-muted);
+      max-width: 640px;
+      margin: 0 auto 32px auto;
+    }
+
+    /* Feature Grid Section */
+    .features-section {
+      background: var(--accent);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 80px 40px;
+    }
+
+    .section-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 48px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 32px;
+    }
+
+    .feature-card {
+      background: white;
+      padding: 32px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.01);
+    }
+
+    .feature-icon {
+      font-size: 24px;
+      background: #eff6ff;
+      color: var(--primary);
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .feature-card h3 {
+      font-size: 18px;
+      margin: 0 0 12px 0;
+    }
+
+    .feature-card p {
+      color: var(--text-muted);
+      font-size: 15px;
+      margin: 0;
+    }
+
+    /* Pricing Section */
+    .pricing-section {
+      padding: 80px 40px;
+    }
+
+    .pricing-card {
+      max-width: 400px;
+      margin: 0 auto;
+      background: white;
+      border: 2px solid var(--primary);
+      border-radius: 16px;
+      padding: 40px;
+      text-align: center;
+      box-shadow: 0 12px 40px rgba(0, 112, 243, 0.08);
+      position: relative;
+    }
+
+    .pricing-badge {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 50px;
+      text-transform: uppercase;
+    }
+
+    .price {
+      font-size: 48px;
+      font-weight: 800;
+      margin: 16px 0;
+    }
+
+    .price span {
+      font-size: 16px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .pricing-features {
+      list-style: none;
+      padding: 0;
+      margin: 32px 0;
+      text-align: left;
+      display: inline-block;
+    }
+
+    .pricing-features li {
+      margin-bottom: 12px;
+      font-size: 15px;
+      color: #333;
+    }
+
+    .pricing-features li::before {
+      content: "✓ ";
+      color: #0070f3;
+      font-weight: bold;
+      margin-right: 8px;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Welcome to the Client Website</h1>
-    <p>The feedback widget should appear in the bottom right corner.</p>
 
-    <!-- Load your single compiled file and pass a dummy API key -->
-    <script src="./dist/widget.js" data-api-key="biz_test_12345" defer></script>
+  <!-- Top Navigation Header -->
+  <nav class="navbar">
+    <a href="#" class="brand-logo">⚡ FeedBackify<span>.</span></a>
+    <div class="nav-links">
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#pricing" class="nav-link">Pricing</a>
+      <a href="/auth.html" class="btn btn-outline">Sign In</a>
+      <a href="/auth.html" class="btn btn-primary">Start Free</a>
+    </div>
+  </nav>
+
+  <!-- Hero Content Section -->
+  <header class="hero">
+    <div class="hero-tagline">1-Minute Installation Setup</div>
+    <h1>Capture user insights with <br><span>one simple snippet.</span></h1>
+    <p>Drop a single script tag into your website. Gather contextual user reviews, ratings, and feedback data seamlessly. Centralize everything in your dashboard backend.</p>
+    <div style="display: flex; gap: 16px; justify-content: center;">
+      <a href="/auth.html" class="btn btn-primary" style="padding: 14px 28px; font-size: 16px;">Get Your Free API Key</a>
+      <a href="#features" class="btn btn-outline" style="padding: 14px 28px; font-size: 16px;">See How It Works</a>
+    </div>
+  </header>
+
+  <!-- Product Features Presentation -->
+  <section id="features" class="features-section">
+    <div class="section-container">
+      <h2 class="section-title">Everything you need to collect feedback</h2>
+      <div class="grid">
+        <div class="feature-card">
+          <div class="feature-icon">✨</div>
+          <h3>Elegant Public Widget</h3>
+          <p>A beautiful floating trigger button and modal form that fits natively into any design. Out-of-the-box text input validation rules.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <h3>Secure Header Verification</h3>
+          <p>Your records are safe. Transactions authenticate securely through custom <code>X-Widget-API-Key</code> request middleware headers.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3>Real-time Analytics</h3>
+          <p>Track metrics, view submission streams, and calculate running star averages live from your secure dashboard backend session framework.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Strategy Area -->
+  <section id="pricing" class="pricing-section">
+    <div class="section-container">
+      <h2 class="section-title">Simple, transparent pricing</h2>
+      <div class="pricing-card">
+        <div class="pricing-badge">Beta Launch Offer</div>
+        <h3 style="margin: 0; color: var(--text-muted);">Developer Plan</h3>
+        <div class="price">$0<span>/forever</span></div>
+        <p style="color: var(--text-muted); font-size: 14px;">Perfect for testing, building, and launching your software product pipelines.</p>
+        <ul class="pricing-features">
+          <li>Unlimited Widget Submissions</li>
+          <li>1-5 Star Selection Tuning Matrix</li>
+          <li>Real-time Cloud MongoDB Connectivity</li>
+          <li>Dashboard JWT Auth Management</li>
+        </ul>
+        <a href="/auth.html" class="btn btn-primary" style="width: 100%; box-sizing: border-box; padding: 14px;">Deploy Your Widget Free</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer Credits -->
+  <footer>
+    <p>&copy; 2026 FeedBackify Platform Engine. Built with TypeScript & MongoDB. All rights reserved.</p>
+  </footer>
+
+  <!-- 🌟 EMBED YOUR COMPLED PUBLIC WIDGET BUNDLE 🌟 -->
+  <!-- This lets you test your live floating feedback script button right here on your landing page interface! -->
+  <script src="./dist/widget.js" data-api-key="fdbk_live_test_key_placeholder" defer></script>
+
 </body>
 </html>

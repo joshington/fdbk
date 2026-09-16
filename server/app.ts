@@ -5,7 +5,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import authRoutes from "./routes/auth";
 import feedbackRoutes from "./routes/feedback";
-
+import analyticsRoutes from "./routes/analytics";
 
 //load envt configs
 dotenv.config();
@@ -19,6 +19,7 @@ app.use(express.json()); //parses incoming JSON payloads automatically
 
 app.use("/api/auth", authRoutes);
 app.use("/api/feedback", feedbackRoutes);
+app.use("/api/analytics", analyticsRoutes); //mount analytics endpoints
 
 //simple health check route
 app.get("/health",  (req, res) => {
