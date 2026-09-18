@@ -13,6 +13,8 @@ export interface AuthenticatedUserRequest extends Request {
     };
 }
 
+
+
 export function requiredDashboardAuth(
     req: AuthenticatedUserRequest,
     res: Response,

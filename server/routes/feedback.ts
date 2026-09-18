@@ -7,6 +7,7 @@ import {validateWidgetApiKey} from "../middleware/authMiddleware";
 import type {AuthenticatedWidgetRequest} from "../middleware/authMiddleware";
 
 
+
 const router = Router();
 //ingestion endpt: receives feeddback submissions directly from the frontend widget
 //Post /api/feedback/submit

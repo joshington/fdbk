@@ -5,6 +5,7 @@ import {Feedback} from "../models/Feedback";
 import {requiredDashboardAuth} from "../middleware/dashboardMiddleware";
 import type {AuthenticatedUserRequest} from "../middleware/dashboardMiddleware";
 
+
 const router = Router();
 
 //dashboard feedback endpt: retrieves all reviews for the logged-in business account
@@ -14,20 +15,50 @@ router.get("/feed", requiredDashboardAuth,
         try {
             //req.user was safely injected by our dashboard middleware on validation
             const businessId = req.user?.userId;
+
+            //==initialize our MongoDB query conditions, prelocking it to this business
+            const queryConditions: any = {businessId};
+
+            //dynamic rating filter(.. /feed?rating=5)
+            if(req.query.rating) {
+                const parsedRating = parseInt(req.query.rating as string, 10);
+                if(!isNan(parsedRating) && parsedRating >= 1 && parsedRating <= 5) {
+                    queryConditions.rating = parsedRating;
+                }
+            }
+
+            //3 - dynamic source filter(e.g /feed?source=website)
+            if(req.query.source) {
+                queryConditions.source = req.query.source as string;
+            }
+
             //query MongoDB for all feedback instances belonging to this businessId
             //sorted by newest entries first
-            const reviews = await Feedback.find({ businessId }).sort({ createdAt: -1});
-            //calculate quick high-level dashbaord metrics dynamically
-            const totalSubmissions = reviews.length;
 
-            const ratedReviews = reviews.filter(r => r.rating);
+            //==go ahead and fetch the filtered reviews from MongoDB
+            //const reviews = await Feedback.find({ businessId }).sort({ createdAt: -1});
+            const reviews = await Feedback.find(queryConditions).sort({ createdAt: -1 });
+            //calculate quick high-level dashbaord metrics dynamically
+
+            //==i have added this, we fetch all reviews once without conditions to keep
+            //the global top metrics cards accurate, even if the feed below is filtered
+            const allBusinessReviews = await Feedback.find({ businessId });
+
+            //const totalSubmissions = reviews.length;
+            const totalSubmissions = allBusinessReviews.length;
+
+
+            const ratedReviews = allBusinessReviews.filter(r => r.rating);
             const averageRating = ratedReviews.length 
                 ? Number((ratedReviews.reduce(sum, r) => sum + (r.rating || 0), 0) / ratedReviews.length).toFixed(1)
                 : 0;
+
+            //send back the payload
             res.status(200).json({
                 metrics: {
                     totalSubmissions,averageRating
                 },
+                filteredCount: reviews.length, //let the frontend know how many items matched filters
                 reviews
             });
         } catch (error) {
