@@ -2,6 +2,7 @@
 import {Router} from "express";
 import type {Response} from "express";
 import {Feedback} from "../models/Feedback";
+import {User} from "../models/User";
 import {requiredDashboardAuth} from "../middleware/dashboardMiddleware";
 import type {AuthenticatedUserRequest} from "../middleware/dashboardMiddleware";
 
@@ -15,6 +16,10 @@ router.get("/feed", requiredDashboardAuth,
         try {
             //req.user was safely injected by our dashboard middleware on validation
             const businessId = req.user?.userId;
+
+            //==fetch the business details using the ID from the token to grab the API key
+            const businessUser =  await User.findById(businessId);
+
 
             //==initialize our MongoDB query conditions, prelocking it to this business
             const queryConditions: any = {businessId};
@@ -50,14 +55,15 @@ router.get("/feed", requiredDashboardAuth,
 
             const ratedReviews = allBusinessReviews.filter(r => r.rating);
             const averageRating = ratedReviews.length 
-                ? Number((ratedReviews.reduce(sum, r) => sum + (r.rating || 0), 0) / ratedReviews.length).toFixed(1)
+                ? Number((ratedReviews.reduce((sum, r) => sum + (r.rating || 0), 0) / ratedReviews.length).toFixed(1))
                 : 0;
 
             //send back the payload
-            res.status(200).json({
+            res.status(200).json({   
                 metrics: {
                     totalSubmissions,averageRating
                 },
+                apiKey: businessUser ? businessUser.apiKey : "",
                 filteredCount: reviews.length, //let the frontend know how many items matched filters
                 reviews
             });

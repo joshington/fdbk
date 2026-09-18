@@ -101,6 +101,83 @@ export const dashboardStyles = `
     color: #ffca28;
     font-size: 16px;
   }
+
+    /* Add this inside the dashboardStyles string block */
+  .control-bar {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 24px;
+  }
+
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .filter-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #666666;
+    text-transform: uppercase;
+  }
+
+  .filter-select {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    background: #ffffff;
+    cursor: pointer;
+  }
+
+    /* Add this inside the dashboardStyles template string in dashboardUi.ts */
+  .api-key-card {
+    background: #ffffff;
+    border: 1px solid #eaeaea;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+  }
+
+  .api-key-info h4 {
+    margin: 0 0 4px 0;
+    font-size: 14px;
+    color: #111111;
+  }
+
+  .api-key-info p {
+    margin: 0;
+    font-size: 13px;
+    color: #666666;
+  }
+
+  .api-key-display {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .api-key-badge {
+    background: #f4f4f4;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-family: monospace;
+    font-size: 14px;
+    color: #333333;
+    border: 1px solid #ccc;
+  }
+
+
 `;
 
 export function injectDashboardStyles(): void {

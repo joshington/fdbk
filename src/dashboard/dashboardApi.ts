@@ -19,18 +19,23 @@ export interface AnalyticsData {
 
 //ferches business metrics and review feed from the secured backend router
 //automatically injects the JWT token from browserr localStorage
-export async function fetchDashboardData(): Promise<AnalyticsData | null> {
+export async function fetchDashboardData(rating?: string, source?: string): Promise<AnalyticsData | null> {
     try {
         //1 -grab the session token saved during a successful login flow
         const token = localStorage.getItem("dashboard_jwt_token");
         if(!token) {
             console.warn("Dashboard Fetch Redirect: No active session token found");
             //if no token exists, we handle the routing redirect to the login screen
-            window.location.href = "/login.html";
+            window.location.href = "/auth.html";
             return null;
         }
+
+        //construct the URL dynamically with search queries
+        const url = new URL(`${BASE_URL}/feed`);
+        if (rating) url.searchParams.append("rating", rating);
+        if (rating) url.searchParams.append("source", source);
         //2 - fire the secure GET request with the bearer schema header
-        const response = await fetch(`${BASE_URL}/feed`, {
+        const response = await fetch(url.toString(), {
             method: "GET",
             headers: {
                 "Content-Type": "applicatin/json",
@@ -42,7 +47,7 @@ export async function fetchDashboardData(): Promise<AnalyticsData | null> {
         if(response.status === 401) {
             console.error("Session expired or token invalid.");
             localStorage.removeItem("dashboard_jwt_token");
-            window.location.href = "/login.html";
+            window.location.href = "/auth.html";
             return null;
         }
 
@@ -52,8 +57,8 @@ export async function fetchDashboardData(): Promise<AnalyticsData | null> {
         //return the fully populated AnalyticsData block
         return await response.json();
     } catch (error) {
-        console.error("Dashboard controller failed to establish data synchronization:", error);
-        alert("Could not load metrics. Please ensure your backend server is running.");
+        console.error("Dashboard data sync failed:", error);
+        //alert("Could not load metrics. Please ensure your backend server is running.");
         return null;
     }
 }
