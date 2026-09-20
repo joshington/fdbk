@@ -51,18 +51,28 @@ router.get("/feed", requiredDashboardAuth,
 
             //const totalSubmissions = reviews.length;
             const totalSubmissions = allBusinessReviews.length;
+            const distribution = { _5: 0, _4: 0, _3: 0, _2: 0, _1: 0 };
 
 
-            const ratedReviews = allBusinessReviews.filter(r => r.rating);
+            const ratedReviews = allBusinessReviews.filter(r => {
+                if(r.rating === 5) distribution._5++;
+                if(r.rating === 4) distribution._4++;
+                if(r.rating === 3) distribution._3++;
+                if(r.rating === 2) distribution._2++;
+                if(r.rating === 1) distribution._1++;
+                return r.rating;
+            });
             const averageRating = ratedReviews.length 
                 ? Number((ratedReviews.reduce((sum, r) => sum + (r.rating || 0), 0) / ratedReviews.length).toFixed(1))
                 : 0;
 
+             
             //send back the payload
             res.status(200).json({   
                 metrics: {
                     totalSubmissions,averageRating
                 },
+                distribution,
                 apiKey: businessUser ? businessUser.apiKey : "",
                 filteredCount: reviews.length, //let the frontend know how many items matched filters
                 reviews

@@ -23,12 +23,27 @@ export function renderDashboard(rootId: string, data: any, currentRating="", cur
   const rootElement = document.getElementById(rootId);
   if (!rootElement) return;
 
+    // Fallback protection if distribution keys are uninitialized
+  const dist = data.distribution || { _5: 0, _4: 0, _3: 0, _2: 0, _1: 0 };
+  const maxCount = Math.max(dist._5, dist._4, dist._3, dist._2, dist._1, 1); // Avoid division by zero
+
+  // Calculate percentages safely for CSS filling rules
+  const pct5 = ((dist._5 / maxCount) * 100).toFixed(0);
+  const pct4 = ((dist._4 / maxCount) * 100).toFixed(0);
+  const pct3 = ((dist._3 / maxCount) * 100).toFixed(0);
+  const pct2 = ((dist._2 / maxCount) * 100).toFixed(0);
+  const pct1 = ((dist._1 / maxCount) * 100).toFixed(0);
+
   // Build structure safely via standard literal templates
   rootElement.innerHTML = `
     <div class="dashboard-container">
       <div class="dashboard-header">
-        <h2>Analytics Dashboard</h2>
-        <span style="color: #666;">Live Stream Pipeline</span>
+        <div>
+          <h2 style="margin: 0 0 4px 0;">Analytics Dashboard</h2>
+          <span style="color: #666; font-size: 14px;">Live Stream Pipeline</span>
+        </div>
+        <button id="dashboard-logout-btn" class="btn-logout">Log Out</button>
+
       </div>
 
       <div class="api-key-card">
@@ -51,6 +66,51 @@ export function renderDashboard(rootId: string, data: any, currentRating="", cur
         <div class="metric-card">
           <div class="metric-title">Average Rating</div>
           <div class="metric-value">${data.metrics.averageRating || "N/A"} ★</div>
+        </div>
+      </div>
+
+      <!-- 📊 NEW: Native CSS Rating Distribution Trend Bar Chart Component -->
+      <div class="chart-card">
+        <div class="chart-title">Rating Distribution Breakdown</div>
+        
+        <div class="chart-row">
+          <div class="chart-label">5 Star</div>
+          <div class="chart-bar-container">
+            <div class="chart-bar-fill" style="width: ${pct5}%;"></div>
+          </div>
+          <div class="chart-count">${dist._5}</div>
+        </div>
+
+        <div class="chart-row">
+          <div class="chart-label">4 Star</div>
+          <div class="chart-bar-container">
+            <div class="chart-bar-fill" style="width: ${pct4}%;"></div>
+          </div>
+          <div class="chart-count">${dist._4}</div>
+        </div>
+
+        <div class="chart-row">
+          <div class="chart-label">3 Star</div>
+          <div class="chart-bar-container">
+            <div class="chart-bar-fill" style="width: ${pct3}%;"></div>
+          </div>
+          <div class="chart-count">${dist._3}</div>
+        </div>
+
+        <div class="chart-row">
+          <div class="chart-label">2 Star</div>
+          <div class="chart-bar-container">
+            <div class="chart-bar-fill" style="width: ${pct2}%;"></div>
+          </div>
+          <div class="chart-count">${dist._2}</div>
+        </div>
+
+        <div class="chart-row">
+          <div class="chart-label">1 Star</div>
+          <div class="chart-bar-container">
+            <div class="chart-bar-fill" style="width: ${pct1}%;"></div>
+          </div>
+          <div class="chart-count">${dist._1}</div>
         </div>
       </div>
 
@@ -78,6 +138,8 @@ export function renderDashboard(rootId: string, data: any, currentRating="", cur
             <option value="instagram" ${currentSource === "instagram" ? "selected" : ""}>Instagram</option>
           </select>
         </div>
+        <button id="export-csv-btn" class="btn-export">Export to CSV</button>
+
       </div>
 
       <!-- Feed Stream Submissions -->

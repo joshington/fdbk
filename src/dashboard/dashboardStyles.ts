@@ -177,6 +177,98 @@ export const dashboardStyles = `
     border: 1px solid #ccc;
   }
 
+    /* Add this inside the dashboardStyles template string in dashboardUi.ts */
+  .chart-card {
+    background: #ffffff;
+    border: 1px solid #eaeaea;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 32px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+  }
+
+  .chart-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #111111;
+  }
+
+  .chart-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .chart-label {
+    width: 60px;
+    font-size: 13px;
+    color: #444444;
+    font-weight: 500;
+    text-align: right;
+  }
+
+  .chart-bar-container {
+    flex-grow: 1;
+    background: #f4f4f4;
+    height: 16px;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .chart-bar-fill {
+    background: linear-gradient(90deg, #0070f3, #00dfd8);
+    height: 100%;
+    border-radius: 8px;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 0%; /* Dynamic fill hook */
+  }
+
+  .chart-count {
+    width: 35px;
+    font-size: 13px;
+    color: #666666;
+    font-weight: 600;
+  }
+  
+    /* Add these inside the dashboardStyles template string in dashboardUi.ts */
+  .btn-logout {
+    background-color: transparent;
+    color: #ff3333;
+    border: 1px solid #ff3333;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .btn-logout:hover {
+    background-color: #fff5f5;
+  }
+
+  .btn-export {
+    background-color: #2f855a;
+    color: #ffffff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: auto; /* Pushes the export button to the far right of the control bar */
+    transition: background-color 0.2s ease;
+  }
+
+  .btn-export:hover {
+    background-color: #22643c;
+  }
+
+
+
 
 `;
 
