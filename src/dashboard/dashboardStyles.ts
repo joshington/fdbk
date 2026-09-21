@@ -268,8 +268,72 @@ export const dashboardStyles = `
   }
 
 
+    /* Add these inside the dashboardStyles string block in dashboardUi.ts */
+  .badge-cat {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #ffffff;
+    margin-right: 6px;
+  }
+  .badge-cat.bug { background-color: #ff3333; }      /* High priority red */
+  .badge-cat.request { background-color: #0070f3; }  /* Request feature blue */
+  .badge-cat.praise { background-color: #2f855a; }   /* Delight green */
+  .badge-cat.general { background-color: #666666; }  /* Charcoal neutral */
 
+  .pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin-top: 32px;
+    padding: 20px 0;
+  }
 
+    /* Add these inside the dashboardStyles template string in dashboardUi.ts */
+  .analytics-insights-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+
+  .location-leaderboard-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .location-leaderboard-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background: #fafafa;
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+
+  .location-name {
+    font-weight: 500;
+    color: #333333;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .location-count-badge {
+    background: #0070f3;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 2px 8px;
+    border-radius: 20px;
+  }
 `;
 
 export function injectDashboardStyles(): void {

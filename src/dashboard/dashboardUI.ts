@@ -34,6 +34,9 @@ export function renderDashboard(rootId: string, data: any, currentRating="", cur
   const pct2 = ((dist._2 / maxCount) * 100).toFixed(0);
   const pct1 = ((dist._1 / maxCount) * 100).toFixed(0);
 
+  // Fallback protection for top traffic locations array
+  const topLocs = data.topLocations || [];
+
   // Build structure safely via standard literal templates
   rootElement.innerHTML = `
     <div class="dashboard-container">
@@ -66,6 +69,33 @@ export function renderDashboard(rootId: string, data: any, currentRating="", cur
         <div class="metric-card">
           <div class="metric-title">Average Rating</div>
           <div class="metric-value">${data.metrics.averageRating || "N/A"} ★</div>
+        </div>
+      </div>
+
+      <div class="analytics-insights-row">
+        
+        <!-- Rating Distribution Trend Bar Chart Component -->
+        <div class="chart-card" style="margin-bottom: 0;">
+          <div class="chart-title">Rating Distribution Breakdown</div>
+          <div class="chart-row"><div class="chart-label">5 Star</div><div class="chart-bar-container"><div class="chart-bar-fill" style="width: ${pct5}%;"></div></div><div class="chart-count">${dist._5}</div></div>
+          <div class="chart-row"><div class="chart-label">4 Star</div><div class="chart-bar-container"><div class="chart-bar-fill" style="width: ${pct4}%;"></div></div><div class="chart-count">${dist._4}</div></div>
+          <div class="chart-row"><div class="chart-label">3 Star</div><div class="chart-bar-container"><div class="chart-bar-fill" style="width: ${pct3}%;"></div></div><div class="chart-count">${dist._3}</div></div>
+          <div class="chart-row"><div class="chart-label">2 Star</div><div class="chart-bar-container"><div class="chart-bar-fill" style="width: ${pct2}%;"></div></div><div class="chart-count">${dist._2}</div></div>
+          <div class="chart-row"><div class="chart-label">1 Star</div><div class="chart-bar-container"><div class="chart-bar-fill" style="width: ${pct1}%;"></div></div><div class="chart-count">${dist._1}</div></div>
+        </div>
+
+        <div class="chart-card" style="margin-bottom: 0;">
+          <div class="chart-title">Top Traffic Locations</div>
+          <div class="location-leaderboard-list">
+            ${topLocs.length === 0 ? `
+              <div style="text-align: center; color: #999; padding: 30px; font-size: 14px;">No geographic traffic captured yet.</div>
+            ` : topLocs.map((loc: any) => `
+              <div class="location-leaderboard-item">
+                <div class="location-name">📍 \${loc.name}</div>
+                <div class="location-count-badge">\${loc.count} entries</div>
+              </div>
+            `).join("")}
+          </div>
         </div>
       </div>
 
@@ -143,7 +173,8 @@ export function renderDashboard(rootId: string, data: any, currentRating="", cur
       </div>
 
       <!-- Feed Stream Submissions -->
-      <h3 class="feed-section-title">Recent Submissions (${data.reviews.length})</h3>
+      <h3 class="feed-section-title">Recent Submissions (\${data.pagination.totalItems})</h3>
+
       <div class="feedback-list">
         ${data.reviews.length === 0 ? `
           <div style="text-align: center; color: #999; padding: 40px; background: white; border: 1px solid #eaeaea; border-radius: 12px;">
@@ -153,16 +184,26 @@ export function renderDashboard(rootId: string, data: any, currentRating="", cur
           <div class="feedback-item">
             <div class="feedback-meta">
               <div>
+                <!-- 🌟 VALUE ADD: Render the automated priority categorization badge -->
+                <span class="badge-cat ${review.category}">${review.category === 'request' ? '💡 Request' : review.category === 'bug' ? '🚨 Urgent Bug' : review.category === 'praise' ? '🎉 Praise' : '💬 General'}</span>
                 <span class="rating-stars">${review.rating ? "★".repeat(review.rating) + "☆".repeat(5 - review.rating) : "No Rating"}</span>
               </div>
-              <div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <!-- 🌟 VALUE ADD DISPLAY: Render client pin location data -->
+                <span style="color: #666; font-size: 12px; font-weight: 500; background: #f4f4f4; padding: 2px 6px; border-radius: 4px;">📍 ${review.location || "Unknown"}</span>
                 <span class="badge-source">${review.source}</span>
-                <span style="margin-left: 8px;">${new Date(review.createdAt).toLocaleDateString()}</span>
+                <span>${new Date(review.createdAt).toLocaleDateString()}</span>
               </div>
+             
             </div>
             <div class="feedback-text">"${review.text}"</div>
           </div>
         `).join("")}
+      </div>
+      <div class="pagination-container">
+        <button id="prev-page-btn" class="filter-select" ${data.pagination.currentPage === 1 ? "disabled style='opacity: 0.5; cursor: not-allowed;'" : ""}>← Previous</button>
+        <span style="font-size: 14px; font-weight: 500; color: #444;">Page ${data.pagination.currentPage} of ${data.pagination.totalPages || 1}</span>
+        <button id="next-page-btn" class="filter-select" ${!data.pagination.hasNextPage ? "disabled style='opacity: 0.5; cursor: not-allowed;'" : ""}>Next →</button>
       </div>
     </div>
   `;

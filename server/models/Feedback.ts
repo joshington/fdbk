@@ -6,6 +6,8 @@ export interface IFeedback extends Document {
     text: string;
     rating?: number;
     source: "website" | "api" | "instagram" | "whatsapp";
+    category: "bug" | "request" | "praise" | "general"; //gives more value
+    location: string;
     createdAt: Date;
 }
 
@@ -14,7 +16,11 @@ const FeedbackSchema = new Schema<IFeedback>({
     text: {type: String, required: true, trim: true},
     rating: {type: Number, min:1, max: 5}, //enforces 1 -5
     source: {type: String, enum: ["website", "api", "instagram", "whatsapp"], default: "website"},
+    category: {type: String, enum: ["bug", "request", "praise", "general"], default: "general"},
+    location: {type: String, default: "unknown"},
     createdAt: {type: Date, default: Date.now}
 });
+
+
 
 export const Feedback = model<IFeedback>("Feedback", FeedbackSchema);

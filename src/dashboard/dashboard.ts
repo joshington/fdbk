@@ -5,6 +5,7 @@ import {renderDashboard} from "./dashboardUi";
 //track active selection scops in the browser memory runtime
 let activeRatingFilter = "";
 let activeSourceFilter = "";
+let currentPageTracker = 1;// track active cursor pagination
 const containerId = "dashboard-root";
 
 // Hold active server response in memory to make local export generation instant
@@ -13,7 +14,7 @@ let currentCachedData: any = null;
 
 async function updateDashboardView() {
     //fetch data stream matching the live filter configuration state
-    const data = await fetchDashboardData(activeRatingFilter, activeSourceFilter);
+    const data = await fetchDashboardData(activeRatingFilter, activeSourceFilter, currentPageTracker);
     if(data){
         currentCachedData = data;
         //render out the elements to the viewport screen container
@@ -21,6 +22,7 @@ async function updateDashboardView() {
         //rebind structural observer element hooks dynamically after DOM re-generation
         bindFilterListeners();
         bindActionListeners();
+        bindPaginationListeners();
     }
 }
 
@@ -29,13 +31,13 @@ function bindFilterListeners() {
     const sourceSelect = document.getElementById("filter-source") as HTMLSelectElement;
 
     if (ratingSelect){
-        ratingSelect.onChange = () => {
+        ratingSelect.onchange = () => {
             activeRatingFilter = ratingSelect.value;
             updateDashboardView();// re-trigger live fetch sync stream
         };
     }
     if(sourceSelect){
-        sourceSelect.onChange = () => {
+        sourceSelect.onchange = () => {
             activeSourceFilter = sourceSelect.value;
             updateDashboardView(); //re-trigger live fetch sync stream
         };
@@ -81,7 +83,7 @@ function bindActionListeners() {
             ];
             //bundle stringdata into an active binary layout blob array
             const csvContent = "data:text/csv;charset=utf-8," + csvRows.join("\n");
-            const encodeUri = encodeUri(csvContent);
+            const encodeUri: string = encodeURI(csvContent);
 
             //forge a temporary un-appended link elemnent to force browser file capture
             const tempLink = document.createElement("a");
@@ -94,6 +96,27 @@ function bindActionListeners() {
         };
     }
 
+}
+
+
+function bindPaginationListeners() {
+    const prevBtn = document.getElementById("prev-page-btn");
+    const nextBtn = document.getElementById("next-page-btn");
+
+    if(prevBtn){
+        prevBtn.onclick = () => {
+            if(currentPageTracker > 1){
+                currentPageTracker--;
+                updateDashboardView();
+            }
+        };
+    }
+    if(nextBtn && currentCachedData?.pagination.hasNextPage) {
+        nextBtn.onclick = () => {
+            currentPageTracker++;
+            updateDashboardView();
+        };
+    }
 }
 
 //initial boot execution sequence loop
