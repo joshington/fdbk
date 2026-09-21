@@ -14,7 +14,11 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 //middleware
-app.use(cors()); //allows cross-origin widget network requests
+app.use(cors({
+    origin: "*", //allow all origins for now, can be restricted to specific domains later
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Widget-API-Key"] //allow custom header for widget API key
+})); //allows cross-origin widget network requests
 app.use(express.json()); //parses incoming JSON payloads automatically
 
 app.use("/api/auth", authRoutes);

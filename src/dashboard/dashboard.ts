@@ -1,5 +1,5 @@
 
-import {fetchDashboardData} from "./dashboardApi";
+import  {fetchDashboardData} from "./dashboardApi";
 import {renderDashboard} from "./dashboardUi";
 
 //track active selection scops in the browser memory runtime
