@@ -1,6 +1,7 @@
 
 
-const BASE_URL = "http://localhost:5000/api/analytics"
+//const BASE_URL = "http://localhost:5000/api/analytics"
+const BASE_URL = "https://fdbk.onrender.com/api/analytics";
 //interface representing structure of our analytics API response payload
 
 export interface AnalyticsData {

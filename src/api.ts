@@ -2,7 +2,8 @@
 import type {FeedbackPayload, SubmitResponse} from "./types";
 
 //target running local express server endpt
-const BASE_URL = "http://localhost:5000/api/feedback";
+//const BASE_URL = "http://localhost:5000/api/feedback";
+const BASE_URL = "https://fdbk.onrender.com/api/feedback";
 
 //sends the feedback payload to the backend server
 //Injects the custom X-Widget-API-Key into the headers for validation.
