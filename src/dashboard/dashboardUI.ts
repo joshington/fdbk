@@ -173,7 +173,7 @@ export function renderDashboard(rootId: string, data: any, currentRating="", cur
       </div>
 
       <!-- Feed Stream Submissions -->
-      <h3 class="feed-section-title">Recent Submissions (\${data.pagination.totalItems})</h3>
+      <h3 class="feed-section-title">Recent Submissions :  (${data.pagination.totalItems})</h3>
 
       <div class="feedback-list">
         ${data.reviews.length === 0 ? `
