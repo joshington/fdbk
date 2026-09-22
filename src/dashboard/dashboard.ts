@@ -1,6 +1,7 @@
 
 import  {fetchDashboardData} from "./dashboardApi";
-import {renderDashboard} from "./dashboardUi";
+import {renderDashboard} from  "./dashboardUi";
+
 
 //track active selection scops in the browser memory runtime
 let activeRatingFilter = "";

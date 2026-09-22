@@ -15,7 +15,7 @@ export default defineConfig({
                 auth: resolve(__dirname, "auth.html"),
                 dashboard: resolve(__dirname, "dashboard.html"),
                 //compiles the widget file alongside the pages
-                widget: resolve(__dirname, "src/widget.ts")
+                //widget: resolve(__dirname, "src/widget.ts")
             },
             //3 - keep output file names predictable and clean
             output: {
@@ -27,13 +27,6 @@ export default defineConfig({
                 assetFileNames: "assets/[name]-[hash].[ext]"
             }
         }
-        //lib: {
-        //    entry: resolve(import.meta.dirname, 'src/widget.ts'),
-        //    name: 'FeedbackWidget',
-        //    formats: ['iife'], //very important
-        //    fileName: () => 'widget.js',
-        //},
-        //the lib config block is used when building only single standalone JS library file
     },
     server: {
         port: 3000,

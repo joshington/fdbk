@@ -6,7 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "vite",
     "watch": "vite build --watch",
-    "build": "vite build",
+    "build": "vite build && vite build --config vite.widget.config.ts",
     "server": "nodemon --exec tsx  server/app.ts",
     "typecheck": "tsc --noEmit"
   },
